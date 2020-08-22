@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>web-security</title>
+</head>
+<body>
+<fieldset>
+    <legend>xss</legend>
+    <p id="xssExample1">example1</p>
+    <p id="xssExample2">example2</p>
+    <input type="text" name="c" id="content-input">
+    <br>
+    <button onclick="handleClickXss()">提交xss</button>
+    <button onclick="handleClickXss('/xss/add/no')">不能xss</button>
+    <button onclick="handleClickXssContent()">查看xss内容</button>
+    <div>
+        <p id="xss-content"></p>
+    </div>
+</fieldset>
+</body>
+<script>
+    onload = function() {
+        const xssExample1 = `\<script\>alert(111)\<\/script\>`
+        const xssExample2 = `\<script\>
+                                fetch('/xss/content').then(res => res.text()).then(res => {
+                                    alert(res);
+                                    window.open('/xss/content', '_self');
+                                })
+                            \<\/script\>`
+        document.getElementById('xssExample1').innerText += xssExample1;
+        document.getElementById('xssExample2').innerText += xssExample2;
+
+        fetch('/xss/content').then(res => res.text()).then(res => {
+            refreshContent(res);
+        })
+    }
+
+    function handleClickXss(url = '/xss/add') {
+        const input = document.getElementById('content-input');
+        fetch(url, {
+            body: JSON.stringify({c: input.value}),
+            method: 'POST',
+        }).then(res => res.text()).then(res => {
+            refreshContent(res);
+        })
+    }
+    
+    function handleClickXssContent() {
+        window.open('/xss/content', '_blank')
+    }
+
+    function refreshContent(c) {
+        const content = document.getElementById('xss-content');
+        content.innerText = c; // xss处理
+    }
+</script>
+</html>
