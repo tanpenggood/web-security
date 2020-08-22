@@ -12,5 +12,4 @@
 
 ## web
 
-![](localhost_8080_.png)
-![](images/localhost_8080_.png)
+![](https://raw.githubusercontent.com/tanpenggood/web-security/master/localhost_8080_.png)
