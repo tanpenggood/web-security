@@ -12,4 +12,5 @@
 
 ## web
 
-![](./localhost_8080_.png)
+![](localhost_8080_.png)
+![](images/localhost_8080_.png)
